@@ -4,7 +4,7 @@
 //Global Variable#####
 let aliens, boat,  boatBullets, alienBullets;
 let ocean;
-let healthIndicator;
+let healthIndicator, scoreIndicator;
 
 function setup() {
   let cnv = createCanvas(windowWidth - 20, windowHeight - 60);
@@ -15,8 +15,9 @@ function setup() {
   boatBullets = [];
   alienBullets = [];
   boat = new Boat(width / 2, height - 100);//Boat Made#####
-  loadAliens(5);//Function That Creates Starting Aliens#####
+  loadAliens(30);//Function That Creates Starting Aliens#####
   healthIndicator = new HealthIndicator();//Health Indicator Made#####
+  scoreIndicator = new ScoreIndicator();//Score Indicator Made#####
 
   // frameRate(7.5);
 
@@ -34,6 +35,7 @@ function draw() {
   runAliens();//Function That Runs All Aliens#####
   alienKilled();//Function That Deletes Alien If Killed#####
   bulletDeletion();//Function That Deletes Bullets When Needed#####
+  scoreIndicator.render();//Runs Score Indicator#####
 
 
   if (aliens.length === 0){//TEMP%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -43,6 +45,13 @@ function draw() {
 
 function mousePressed(){
   boatBullets.push(new BoatBullet(boat.x, boat.y, boat.angle));//Make New Player Bullet#####
+}
+
+function keyPressed(){
+  // console.log(char(keyCode) + " " + keyCode);
+  if (keyCode === 32){//If Space bar is Pressed Create A Bullet#####
+    boatBullets.push(new BoatBullet(boat.x, boat.y, boat.angle));//Make New Player Bullet#####
+  }
 }
 
 //Start Function loadAliens##########
@@ -101,6 +110,9 @@ function runBullets(){
 function bulletDeletion(){
   for (let i = 0; i < boatBullets.length; i++){
     if (boatBullets[i].detection || boatBullets[i].outOfBounds){
+      if (boatBullets[i].detection){
+        scoreIndicator.score++;
+      }
       boatBullets.splice(i, 1);//Gets Rid Of Bullet#####
     }
   }

@@ -35,3 +35,18 @@ class HealthIndicator extends p5.Vector{
   }
 }
 //End Class HealthIndicator##########
+
+//Start Class ScoreIndicator##########
+class ScoreIndicator{
+  constructor(){
+    this.score = 0;
+  }
+
+  render(){
+    noStroke();
+    fill(255);
+    textSize(15);
+    text("Score: " + this.score, 5, 15);
+  }
+}
+//End Class ScoreIndicator##########
