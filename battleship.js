@@ -9,6 +9,8 @@ class Boat extends p5.Vector{
     this.acc = createVector(0.3, 0);//Acceleration of the Boat#####
     this.health = 3;//Health of the Boat; Used in a Seperate Function not in the Class#####
     this.angle = atan2(mouseY - this.y, mouseX - this.x);
+    this.fireRate = 45;
+    this.reloaded = false;
   }
 
   run(){
@@ -16,6 +18,7 @@ class Boat extends p5.Vector{
     this.render();
     this.moveBoat();
     this.checkEdge();
+    this.reload();
   }
 
   render(){
@@ -58,6 +61,15 @@ class Boat extends p5.Vector{
       this.x = width - 45;//Width Minus the Radius#####
     } else if (this.x - 45 < 0){
       this.x = 45;//A Radius Away From 0#####
+    }
+  }
+
+  reload(){
+    this.fireRate--;
+    if (this.fireRate > 0){
+      this.reloaded = false;
+    } else if (this.fireRate < 0){
+      this.reloaded = true;
     }
   }
 }

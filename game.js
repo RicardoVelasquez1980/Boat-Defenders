@@ -2,20 +2,32 @@
 //Boat Defender
 
 //Global Variable#####
-let aliens, boat,  boatBullets, alienBullets;
-let ocean;
+let aliens = [], boat, boatBullets = [], alienBullets = [];
+let ocean, clouds;
 let healthIndicator, scoreIndicator;
+/*
+gameState -1 = ASKS FOR IMAGES OR NO IMAGES
+IF IMAGES THEN AN ALERT IS GIVEN TO MAKE SURE YOUR USING THE SERVER
+THIS WILL BE NON EXISTANT WHEN PUBLISHED TO A WEBSITE
+
+
+gameState 0 = Intro Screen
+gameState 1 = Playing Game
+gameState 2 = End/Losing Screen
+gameState 3 = Settings
+gameState 4 = Instructions
+
+ADD OTHER GAMESTATES WHEN NEEDED
+*/
+let gameState = -1;
 
 function setup() {
   let cnv = createCanvas(windowWidth - 20, windowHeight - 60);
   cnv.position((windowWidth - width) / 2, 30);
   cursor(CROSS);//Set Cursor to Cross#####
   ocean = new Ocean();
-  aliens = [];
-  boatBullets = [];
-  alienBullets = [];
   boat = new Boat(width / 2, height - 100);//Boat Made#####
-  loadAliens(30);//Function That Creates Starting Aliens#####
+  loadAliens(3);//Function That Creates Starting Aliens#####
   healthIndicator = new HealthIndicator();//Health Indicator Made#####
   scoreIndicator = new ScoreIndicator();//Score Indicator Made#####
 
@@ -24,35 +36,57 @@ function setup() {
 }
 
 function draw() {
-  background(144, 214, 249);
-  ocean.run();
-
-  alienBulletCreation();
-  runBullets();//Runs Bullets#####
-  boat.run();//Runs Boat#####
-  boatDamaged();//Function That Checks If Boat Has Been Hit#####
-  healthIndicator.run();//Runs Health Indicator#####
-  runAliens();//Function That Runs All Aliens#####
-  alienKilled();//Function That Deletes Alien If Killed#####
-  bulletDeletion();//Function That Deletes Bullets When Needed#####
-  scoreIndicator.render();//Runs Score Indicator#####
-
-
-  if (aliens.length === 0){//TEMP%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    loadAliens(5);
-  }
+  gameRun();
 }
 
 function mousePressed(){
-  boatBullets.push(new BoatBullet(boat.x, boat.y, boat.angle));//Make New Player Bullet#####
+  if (boat.reloaded){
+    boatBullets.push(new BoatBullet(boat.x, boat.y, boat.angle));//Make New Player Bullet#####
+    boat.fireRate = 45;
+  }
 }
 
 function keyPressed(){
   // console.log(char(keyCode) + " " + keyCode);
-  if (keyCode === 32){//If Space bar is Pressed Create A Bullet#####
+  if (keyCode === 32 && boat.reloaded){//If Space bar is Pressed Create A Bullet#####
     boatBullets.push(new BoatBullet(boat.x, boat.y, boat.angle));//Make New Player Bullet#####
+    boat.fireRate = 45;
   }
 }
+
+//Start Function gameRun##########
+function gameRun(){
+  if (gameState === -1){
+    background(0);
+  } else if (gameState === 0){
+    background(144, 214, 249);
+    ocean.run();
+
+    alienBulletCreation();
+    runBullets();//Runs Bullets#####
+    boat.run();//Runs Boat#####
+    boatDamaged();//Function That Checks If Boat Has Been Hit#####
+    healthIndicator.run();//Runs Health Indicator#####
+    runAliens();//Function That Runs All Aliens#####
+    alienKilled();//Function That Deletes Alien If Killed#####
+    bulletDeletion();//Function That Deletes Bullets When Needed#####
+    scoreIndicator.render();//Runs Score Indicator#####
+
+
+    if (aliens.length === 0){//TEMP%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      loadAliens(5);
+    }
+  } else if (gameState === 1){
+
+  } else if (gameState === 2){
+
+  } else if (gameState === 3){
+
+  } else if (gameState === 4){
+
+  }
+}
+//End Function gameRun##########
 
 //Start Function loadAliens##########
 function loadAliens(n){
@@ -81,6 +115,12 @@ function boatDamaged(){
   }
 
   //Bullet Damage#####
+  for (let i = 0; i < alienBullets.length; i++){
+    if ( alienBullets[i].detection){
+      boat.health--;//Boat Health Decreased#####
+      alienBullets.splice(i, 1);//Alien Bullet Removed
+    }
+  }
 }
 //End Function boatDamaged#####
 
@@ -129,8 +169,8 @@ function alienKilled(){
   for (let i = 0; i < boatBullets.length; i++){
     for (let j = 0; j < aliens.length; j++){
       if (boatBullets[i].detection && boatBullets[i].alienHit === aliens[j]){
-      aliens.splice(j, 1);//Alien Is Removed#####
-    }
+        aliens.splice(j, 1);//Alien Is Removed#####
+      }
     }
   }
 }

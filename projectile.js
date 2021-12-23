@@ -26,7 +26,7 @@ class Projectile extends p5.Vector{
   }
 
   move(){
-    this.vel.limit(6);//Velocity Of Bullet Limited#####
+    this.vel.limit(5);//Velocity Of Bullet Limited#####
     this.vel.mult(3);//Velocity Of Bullet Multiplied#####
     this.add(this.vel);//Bullet Position Changed#####
   }
@@ -77,7 +77,7 @@ class AlienBullet extends Projectile{
   run(){
     this.move();
     this.render();
-    // this.checkDetection();
+    this.checkDetection();
     this.checkInBounds();
   }
 
@@ -92,7 +92,7 @@ class AlienBullet extends Projectile{
   }
 
   move(){
-    this.vel.limit(5);//Velocity Of Bullet Limited#####
+    this.vel.limit(4);//Velocity Of Bullet Limited#####
     this.vel.mult(3);//Velocity Of Bullet Multiplied#####
     this.add(this.vel);//Bullet Position Changed#####
   }
@@ -100,6 +100,12 @@ class AlienBullet extends Projectile{
   checkInBounds(){
     if (this.x < 0 || this.x > width || this.y < 0 || this.y > height){//If Bullet Doesnt Hit A Bullet But Goes Out Of The Screen Then outOfBounds Becomes True#####
       this.outOfBounds = true;
+    }
+  }
+
+    checkDetection(){
+    if (this.y > boat.y && this.y < boat.y + 25 && this.x - 15 > boat.x - 45 && this.x < boat.x + 45){
+      this.detection = true;
     }
   }
 }

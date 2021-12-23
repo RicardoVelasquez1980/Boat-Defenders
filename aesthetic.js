@@ -20,3 +20,29 @@ class Ocean extends p5.Vector{
   }
 }
 //End Class Ocean##########
+
+//Start Class Clouds##########
+class Clouds extends p5.Vector{
+  constructor(x, y){
+    super(x, y);//Loaction#####
+    this.vel = createVector(0.5, 0);//Velocity#####
+    this.rad = random(15, 25);//Radius of Cloud#####
+    this.outOfBounds = false;//Not Out Of Bounds#####
+  }
+
+  run(){
+    this.render();
+    this.move();
+    // this.checkOutOfBounds();
+  }
+
+  render(){
+    fill(255);
+    noStroke();
+    ellipse(this.x, this.y, this.r);
+  }
+  move(){
+    this.add(this.vel);
+  }
+}
+//End Class Clouds##########
