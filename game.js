@@ -3,7 +3,7 @@
 
 //Global Variable#####
 let aliens = [], boat, boatBullets = [], alienBullets = [];
-let ocean, clouds;
+let ocean, clouds = [];
 let healthIndicator, scoreIndicator;
 /*
 gameState -1 = ASKS FOR IMAGES OR NO IMAGES
@@ -26,6 +26,7 @@ function setup() {
   cnv.position((windowWidth - width) / 2, 30);
   cursor(CROSS);//Set Cursor to Cross#####
   ocean = new Ocean();
+  justClouds('SETUP');//Couldn't Come Up With A Good Name#####
   boat = new Boat(width / 2, height - 100);//Boat Made#####
   loadAliens(3);//Function That Creates Starting Aliens#####
   healthIndicator = new HealthIndicator();//Health Indicator Made#####
@@ -58,9 +59,11 @@ function keyPressed(){
 function gameRun(){
   if (gameState === -1){
     background(0);
+    justClouds('DRAW');
   } else if (gameState === 0){
     background(144, 214, 249);
     ocean.run();
+    justClouds('DRAW');//Run And Make Clouds, Couldnt Find A Better Name For The Function#####
 
     alienBulletCreation();
     runBullets();//Runs Bullets#####
@@ -175,3 +178,44 @@ function alienKilled(){
   }
 }
 //End Function alienKilled#####
+
+//Start Function justClouds##########
+function justClouds(str){
+  let x = 0;
+  let y = 0;
+  let r = 0;
+  if (str === 'SETUP'){
+    for (let i = 1; i < 6; i++){
+      for (let j = 0; j < 3; j++){
+        r = random(100, 60);
+        x = random(-700, -670) * i;
+        y = random(height * 0.25 + r / 2, height * 0.25 - r / 2);
+        clouds.push(new Clouds(x, y, r));
+      }
+    }
+  } else if (str === 'DRAW'){
+    for (let i = 0; i < clouds.length; i++){
+      clouds[i].run();
+    }
+    for (let i = 0; i < clouds.length; i += 3){
+      if (clouds[i].outOfBounds && clouds[i + 1].outOfBounds && clouds[i + 2].outOfBounds){
+        clouds[i].rad = random(100, 60);
+        clouds[i].x = random(-700, -670) * 6;
+        clouds[i].y = random(height * 0.25 + r / 2, height * 0.25 - r / 2);
+
+        clouds[i + 1].rad = random(100, 60);
+        clouds[i + 1].x = random(-700, -670) * 6;
+        clouds[i + 1].y = random(height * 0.25 + r / 2, height * 0.25 - r / 2);
+
+        clouds[i + 2].rad = random(100, 60);
+        clouds[i + 2].x = random(-700, -670) * 6;
+        clouds[i + 2].y = random(height * 0.25 + r / 2, height * 0.25 - r / 2);
+
+        clouds[i].outOfBounds = false;
+        clouds[i + 1].outOfBounds = false;
+        clouds[i + 2 ].outOfBounds = false;
+      }
+    }
+  }
+}
+//End Function justClouds##########
