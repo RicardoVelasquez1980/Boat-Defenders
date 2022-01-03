@@ -23,6 +23,7 @@ class Alien extends p5.Vector{
   }
 
   render() {
+    push();
     fill(this.clr);
     stroke(107, 67, 142); //Light Purple#####
     strokeWeight(2);
@@ -42,6 +43,7 @@ class Alien extends p5.Vector{
       rightX,
       rightY
     );
+    pop();
     this.angle = atan2(boat.y - (this.topY + 10), boat.x - this.topX);//Angle#####
     push();
     translate(this.topX, this.topY + 10);

@@ -22,9 +22,11 @@ class Boat extends p5.Vector{
   }
 
   render(){
+    push();
     noStroke();
     fill(79, 89, 115);
     arc(this.x, this.y, 90, 50, 0, PI, CHORD);//Boat#####
+    pop();
   }
 
   moveBoat(){

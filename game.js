@@ -19,14 +19,20 @@ gameState 4 = Instructions
 
 ADD OTHER GAMESTATES WHEN NEEDED
 */
-let gameState = -1;
+let gameState = -1, gameStyle = "N/A";
+let playBtn, instructionBtn, settingBtn, basicGameBtn, imageGameBtn;
 
 function setup() {
   let cnv = createCanvas(windowWidth - 20, windowHeight - 60);
   cnv.position((windowWidth - width) / 2, 30);
   cursor(CROSS);//Set Cursor to Cross#####
+
+  basicGameBtn = new Button(width * 0.1, height * 0.75, "BASIC", 50, color(255), color(0));
+  imageGameBtn = new Button(width - ((width * 0.1) + (width * 0.25)), height * 0.75, "IMAGE", 50, color(255), color(0))
+
   ocean = new Ocean();
   justClouds('SETUP');//Couldn't Come Up With A Good Name#####
+
   boat = new Boat(width / 2, height - 100);//Boat Made#####
   loadAliens(3);//Function That Creates Starting Aliens#####
   healthIndicator = new HealthIndicator();//Health Indicator Made#####
@@ -45,6 +51,16 @@ function mousePressed(){
     boatBullets.push(new BoatBullet(boat.x, boat.y, boat.angle));//Make New Player Bullet#####
     boat.fireRate = 45;
   }
+
+  if (gameState === -1 && basicGameBtn.mouseOverButton){
+    gameStyle = "BASIC";
+    basicGameBtn.mouseOverButton = false;
+    gameState = 0;
+  } else if (gameState === -1 && imageGameBtn.mouseOverButton){
+    gameStyle = "IMAGE";
+    imageGameBtn.mouseOverButton = false;
+    gameState = 0;
+  }
 }
 
 function keyPressed(){
@@ -59,8 +75,41 @@ function keyPressed(){
 function gameRun(){
   if (gameState === -1){
     background(0);
-    justClouds('DRAW');
+    push();
+    fill(255);
+    noStroke();
+    textAlign(CENTER);
+    textSize(80);
+    text("Decide On", width * 0.5, height * 0.2);
+    text("A", width * 0.5, height * 0.35);
+    text("Game Style", width * 0.5, height * 0.5);
+    pop();
+    push();
+    fill(255, 0, 0);
+    noStroke();
+    textSize(10);
+    textAlign(LEFT, TOP);
+    text("You Can't Come Back To This Sreen", 5, 5);
+    pop();
+    basicGameBtn.run();
+    imageGameBtn.run();
+
   } else if (gameState === 0){
+    background(144, 214, 249);
+    ocean.run();
+    justClouds('DRAW');//Run And Make Clouds, Couldnt Find A Better Name For The Function#####
+    push();
+    fill(76);
+    stroke(85, 4, 143);
+    strokeWeight(2);
+    textSize(120);
+    textAlign(CENTER);
+    text("BOAT", width / 2, height * 0.25);;
+    text("DEFENDERS", width / 2, height * 0.5);
+    pop();
+
+
+  } else if (gameState === 1){
     background(144, 214, 249);
     ocean.run();
     justClouds('DRAW');//Run And Make Clouds, Couldnt Find A Better Name For The Function#####
@@ -79,13 +128,15 @@ function gameRun(){
     if (aliens.length === 0){//TEMP%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       loadAliens(5);
     }
-  } else if (gameState === 1){
 
   } else if (gameState === 2){
 
+
   } else if (gameState === 3){
 
+
   } else if (gameState === 4){
+
 
   }
 }

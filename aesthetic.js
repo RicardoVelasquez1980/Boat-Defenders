@@ -14,9 +14,11 @@ class Ocean extends p5.Vector{
   }
 
   render(){
+    push();
     noStroke();
     fill(10, 112, 163);
     rect(this.x, this.y, this.w, this.h);
+    pop();
   }
 }
 //End Class Ocean##########
@@ -37,9 +39,11 @@ class Clouds extends p5.Vector{
   }
 
   render(){
+    push();
     fill(255);
     noStroke();
     ellipse(this.x, this.y, this.rad);
+    pop();
   }
 
   move(){

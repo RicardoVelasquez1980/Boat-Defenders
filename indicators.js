@@ -27,10 +27,12 @@ class HealthIndicator extends p5.Vector{
 
   indicatorRender(indicate){
     for (let i = 0; i < indicate; i++){
+      push();
       strokeWeight(3);
       stroke(260, 85, 85);
       fill(170, 20, 20);
       rect(this.x + (this.w * i), this.y, this.w, this.h)
+      pop();
     }
   }
 }
@@ -43,10 +45,13 @@ class ScoreIndicator{
   }
 
   render(){
+    push();
     noStroke();
     fill(255);
     textSize(15);
-    text("Score: " + this.score, 5, 15);
+    textAlign(LEFT, TOP);
+    text("SCORE: " + this.score, 5, 5);
+    pop();
   }
 }
 //End Class ScoreIndicator##########
