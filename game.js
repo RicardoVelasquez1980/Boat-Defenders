@@ -31,6 +31,7 @@ function setup() {
   imageGameBtn = new Button(width - ((width * 0.1) + (width * 0.25)), height * 0.75, "IMAGE", 50, NORMAL, color(255), color(0));
   playBtn = new Button(width * 0.2, height * 0.65, "PLAY", 60, BOLD, color(5, 195, 232), color(60));
   instructionBtn = new Button(width - ((width * 0.2) + (width * 0.25)), height * 0.65, "HELP", 60, BOLD, color(5, 195, 232), color(60));
+  settingBtn = new SettingsButton(width * 0.04, height - (height * 0.05), "S", width * 0.03, BOLD, color(5, 195, 232), color(60));
 
   ocean = new Ocean();
   justClouds('SETUP');//Couldn't Come Up With A Good Name#####
@@ -73,7 +74,7 @@ function mousePressed(){
     instructionBtn.mouseOverButton = false;
   }
 
-  
+
 }
 
 function keyPressed(){
@@ -137,7 +138,7 @@ function gameRun(){
 
     playBtn.run();
     instructionBtn.run();
-
+    settingBtn.run();
 
   } else if (gameState === 1){
     background(144, 214, 249);
@@ -199,6 +200,7 @@ function gameRun(){
 
     playBtn.run();
     instructionBtn.run();
+    settingBtn.run();
 
   } else if (gameState === 3){
 

@@ -28,7 +28,7 @@ class Button extends p5.Vector{
     noStroke();
     rect(this.x, this.y, this.w, this.h);
     pop();
-    
+
     push();
     fill(this.clr2);
     noStroke();
@@ -52,3 +52,47 @@ class Button extends p5.Vector{
   }
 }
 //End Class Button##########
+
+//Start Class SettingsButton##########
+class SettingsButton extends Button{
+  constructor(x, y, str, strSize, strStyle, clr1, clr2){
+    super(x, y, str, strSize, strStyle, clr1, clr2);
+    this.r = width * 0.04
+  }
+
+  run(){
+    this.render();
+    this.checkMouseOverButton();
+  }
+
+  render(){
+    push();
+    fill(this.clr1);
+    noStroke();
+    ellipse(this.x, this.y, this.r);
+    pop();
+
+    push();
+    fill(this.clr2);
+    noStroke();
+    textStyle(this.nameStyle);
+    textAlign(CENTER, CENTER);
+    textSize(this.nameSize);
+    text(this.name, this.x, this.y);
+    pop();
+  }
+
+  checkMouseOverButton(){
+    let d = dist(mouseX, mouseY, this.x, this.y);
+    if (d <= this.r / 2){
+      this.mouseOverButton = true;
+      this.clr1 = this.clr1Switch;
+      this.clr2 = this.clr2Switch;
+    } else{
+      this.mouseOverButton = false;
+      this.clr1 = this.clr2Switch;
+      this.clr2 = this.clr1Switch;
+    }
+  }
+}
+//End Class SettingsButton##########
