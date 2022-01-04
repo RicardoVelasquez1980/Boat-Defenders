@@ -2,7 +2,7 @@
 //Boat Defender
 
 //Global Variable#####
-let aliens = [], boat, boatBullets = [], alienBullets = [];
+let aliens = [], boat, boatBullets = [], alienBullets = [], alienSpawn = 3;
 let ocean, clouds = [];
 let healthIndicator, scoreIndicator;
 /*
@@ -27,14 +27,16 @@ function setup() {
   cnv.position((windowWidth - width) / 2, 30);
   cursor(CROSS);//Set Cursor to Cross#####
 
-  basicGameBtn = new Button(width * 0.1, height * 0.75, "BASIC", 50, color(255), color(0));
-  imageGameBtn = new Button(width - ((width * 0.1) + (width * 0.25)), height * 0.75, "IMAGE", 50, color(255), color(0))
+  basicGameBtn = new Button(width * 0.1, height * 0.75, "BASIC", 50, NORMAL, color(255), color(0));
+  imageGameBtn = new Button(width - ((width * 0.1) + (width * 0.25)), height * 0.75, "IMAGE", 50, NORMAL, color(255), color(0));
+  playBtn = new Button(width * 0.2, height * 0.65, "PLAY", 60, BOLD, color(5, 195, 232), color(60));
+  instructionBtn = new Button(width - ((width * 0.2) + (width * 0.25)), height * 0.65, "HELP", 60, BOLD, color(5, 195, 232), color(60));
 
   ocean = new Ocean();
   justClouds('SETUP');//Couldn't Come Up With A Good Name#####
 
   boat = new Boat(width / 2, height - 100);//Boat Made#####
-  loadAliens(3);//Function That Creates Starting Aliens#####
+  loadAliens(alienSpawn);//Function That Creates Starting Aliens#####
   healthIndicator = new HealthIndicator();//Health Indicator Made#####
   scoreIndicator = new ScoreIndicator();//Score Indicator Made#####
 
@@ -54,13 +56,24 @@ function mousePressed(){
 
   if (gameState === -1 && basicGameBtn.mouseOverButton){
     gameStyle = "BASIC";
-    basicGameBtn.mouseOverButton = false;
     gameState = 0;
+    basicGameBtn.mouseOverButton = false;
   } else if (gameState === -1 && imageGameBtn.mouseOverButton){
     gameStyle = "IMAGE";
-    imageGameBtn.mouseOverButton = false;
+    alert("is Web Server For Chrome Being Used?");
     gameState = 0;
+    imageGameBtn.mouseOverButton = false;
   }
+
+  if (gameState === 0 && playBtn.mouseOverButton){
+    gameState = 1;
+    playBtn.mouseOverButton = false;
+  } else if (gameState === 0 && instructionBtn.mouseOverButton){
+    gameState = 4;
+    instructionBtn.mouseOverButton = false;
+  }
+
+  
 }
 
 function keyPressed(){
@@ -84,13 +97,25 @@ function gameRun(){
     text("A", width * 0.5, height * 0.35);
     text("Game Style", width * 0.5, height * 0.5);
     pop();
+
     push();
     fill(255, 0, 0);
     noStroke();
-    textSize(10);
+    textSize(15);
     textAlign(LEFT, TOP);
     text("You Can't Come Back To This Sreen", 5, 5);
     pop();
+
+//DELETE THIS WHEN GAME STYLE IS USED%%%%%%%%%%%%%%%%%%%%%%
+    push();
+    fill(0, 255, 0);
+    noStroke();
+    textAlign(RIGHT, TOP);
+    textSize(10);
+    text("AS OF RIGHT NOW GAME STYLE DOES NOTHING", width - 5, 5);
+    pop();
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
     basicGameBtn.run();
     imageGameBtn.run();
 
@@ -98,15 +123,20 @@ function gameRun(){
     background(144, 214, 249);
     ocean.run();
     justClouds('DRAW');//Run And Make Clouds, Couldnt Find A Better Name For The Function#####
+
     push();
-    fill(76);
-    stroke(85, 4, 143);
-    strokeWeight(2);
-    textSize(120);
+    fill(5, 195, 232);
+    stroke(60);
+    strokeWeight(7);
+    textSize(150);
+    textStyle(BOLD);
     textAlign(CENTER);
     text("BOAT", width / 2, height * 0.25);;
     text("DEFENDERS", width / 2, height * 0.5);
     pop();
+
+    playBtn.run();
+    instructionBtn.run();
 
 
   } else if (gameState === 1){
@@ -124,13 +154,51 @@ function gameRun(){
     bulletDeletion();//Function That Deletes Bullets When Needed#####
     scoreIndicator.render();//Runs Score Indicator#####
 
+    if (aliens.length === 0){
+      alienSpawn += ceil(random(1, 4));;
+      loadAliens(alienSpawn);
+    }
 
-    if (aliens.length === 0){//TEMP%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      loadAliens(5);
+    if (boat.health <= 0){
+      gameState = 2;
     }
 
   } else if (gameState === 2){
+    background(144, 214, 249);
+    ocean.run();
+    justClouds('DRAW');//Run And Make Clouds, Couldnt Find A Better Name For The Function#####
 
+    push();
+    fill(5, 195, 232);
+    stroke(60);
+    strokeWeight(3);
+    textSize(50);
+    textStyle(BOLD);
+    textAlign(CENTER);
+    text("BOAT", width / 2, height * 0.1);;
+    text("DEFENDERS", width / 2, height * 0.2);
+    pop();
+
+    push();
+    fill(200, 0, 0);
+    noStroke();
+    textSize(70);
+    textStyle(BOLD);
+    textAlign(CENTER, CENTER);
+    text("GAME OVER", width / 2, height * 0.4);
+    pop();
+
+    push();
+    fill(255);
+    noStroke();
+    textSize(30);
+    textAlign(CENTER, CENTER);
+    textStyle(ITALIC);
+    text("SCORE: " + scoreIndicator.score, width / 2, height / 2);
+    pop();
+
+    playBtn.run();
+    instructionBtn.run();
 
   } else if (gameState === 3){
 
@@ -207,9 +275,11 @@ function bulletDeletion(){
       if (boatBullets[i].detection){
         scoreIndicator.score++;
       }
+
       boatBullets.splice(i, 1);//Gets Rid Of Bullet#####
     }
   }
+
   for (let i = 0; i < alienBullets.length; i++){
     if (alienBullets[i].detection || alienBullets[i].outOfBounds){
       alienBullets.splice(i, 1);//Gets Rid Of Bullet#####
@@ -218,7 +288,7 @@ function bulletDeletion(){
 }
 //End Function bulletDeletion##########
 
-//Start Function alienKilled#####
+//Start Function alienKilled##########
 function alienKilled(){
   for (let i = 0; i < boatBullets.length; i++){
     for (let j = 0; j < aliens.length; j++){
@@ -228,19 +298,21 @@ function alienKilled(){
     }
   }
 }
-//End Function alienKilled#####
+//End Function alienKilled##########
 
 //Start Function justClouds##########
 function justClouds(str){
   let x = 0;
   let y = 0;
   let r = 0;
+
   if (str === 'SETUP'){
     for (let i = 1; i < 6; i++){
       for (let j = 0; j < 3; j++){
         r = random(100, 60);
         x = random(-700, -670) * i;
         y = random(height * 0.25 + r / 2, height * 0.25 - r / 2);
+
         clouds.push(new Clouds(x, y, r));
       }
     }
@@ -248,6 +320,7 @@ function justClouds(str){
     for (let i = 0; i < clouds.length; i++){
       clouds[i].run();
     }
+
     for (let i = 0; i < clouds.length; i += 3){
       if (clouds[i].outOfBounds && clouds[i + 1].outOfBounds && clouds[i + 2].outOfBounds){
         clouds[i].rad = random(100, 60);

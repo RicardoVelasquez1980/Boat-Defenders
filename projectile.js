@@ -52,6 +52,7 @@ class BoatBullet extends Projectile{//Copies Projectile Class Along With Its p5.
   checkDetection(){
     for (let i = 0; i < aliens.length; i++){
       let distance = round(dist(this.x, this.y, aliens[i].x, aliens[i].y), 1);//Distance Of Alien And Bullet Calculated#####
+      
       if (distance < 30){
         this.detection = true;//Detection Becomes True#####
         this.alienHit = aliens[i];//Specifies Which Alien Has Been Hit#####

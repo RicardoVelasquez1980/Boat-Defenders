@@ -17,12 +17,6 @@ class HealthIndicator extends p5.Vector{
   indicatorUpdate(){
     this.indicate = boat.health;//Takes In Total Health Of Boat#####
     this.indicatorRender(this.indicate);//Renders The Indicator With Current Boat Health#####
-
-    if (this.indicate <= 0){//TEMPORARY%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      //Stops Game From Running When Dead#####
-      noLoop();
-    }
-
   }
 
   indicatorRender(indicate){
@@ -49,6 +43,7 @@ class ScoreIndicator{
     noStroke();
     fill(255);
     textSize(15);
+    textStyle(ITALIC);
     textAlign(LEFT, TOP);
     text("SCORE: " + this.score, 5, 5);
     pop();

@@ -3,12 +3,13 @@
 
 //Start Class Button##########
 class Button extends p5.Vector{
-  constructor(x, y, str, strSize, clr1, clr2){
+  constructor(x, y, str, strSize, strStyle, clr1, clr2){
     super(x, y);
     this.w = width * 0.25;
     this.h = height * 0.15;
     this.name = str;
     this.nameSize = strSize;
+    this.nameStyle = strStyle;
     this.mouseOverButton = false;
     this.clr1 = clr1;
     this.clr2 = clr2;
@@ -27,9 +28,11 @@ class Button extends p5.Vector{
     noStroke();
     rect(this.x, this.y, this.w, this.h);
     pop();
+    
     push();
     fill(this.clr2);
     noStroke();
+    textStyle(this.nameStyle);
     textAlign(CENTER, CENTER);
     textSize(this.nameSize);
     text(this.name, this.x + this.w / 2, this.y + this.h / 1.75);

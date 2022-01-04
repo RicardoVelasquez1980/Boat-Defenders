@@ -49,6 +49,7 @@ class Boat extends p5.Vector{
     } else if (this.angle > 0){
       this.angle = 0;
     }
+    
     push();
     translate(this.x, this.y + 5);//Origin is Now At the Center of the Arc#####
     rotate(this.angle);//Rotate to Angle#####

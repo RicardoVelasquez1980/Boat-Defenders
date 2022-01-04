@@ -44,7 +44,9 @@ class Alien extends p5.Vector{
       rightY
     );
     pop();
+
     this.angle = atan2(boat.y - (this.topY + 10), boat.x - this.topX);//Angle#####
+
     push();
     translate(this.topX, this.topY + 10);
     rotate(this.angle);
@@ -67,6 +69,7 @@ class Alien extends p5.Vector{
     } else if (this.x < 0){
       this.x = width - 10;
     }
+    
     if (this.y < 0) {
       this.y = height - 10;
     } else if (this.y > height){
