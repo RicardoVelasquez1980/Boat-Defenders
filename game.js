@@ -19,8 +19,8 @@ gameState 4 = Instructions
 
 ADD OTHER GAMESTATES WHEN NEEDED
 */
-let gameState = -1, gameStyle = "N/A";
-let playBtn, instructionBtn, settingBtn, basicGameBtn, imageGameBtn;
+let gameState = -1, gameStyle = "N/A", prevPage;
+let playBtn, instructionBtn, settingBtn, basicGameBtn, imageGameBtn, backBtn;
 
 function setup() {
   let cnv = createCanvas(windowWidth - 20, windowHeight - 60);
@@ -31,7 +31,8 @@ function setup() {
   imageGameBtn = new Button(width - ((width * 0.1) + (width * 0.25)), height * 0.75, "IMAGE", 50, NORMAL, color(255), color(0));
   playBtn = new Button(width * 0.2, height * 0.65, "PLAY", 60, BOLD, color(5, 195, 232), color(60));
   instructionBtn = new Button(width - ((width * 0.2) + (width * 0.25)), height * 0.65, "HELP", 60, BOLD, color(5, 195, 232), color(60));
-  settingBtn = new SettingsButton(width * 0.04, height - (height * 0.05), "S", width * 0.03, BOLD, color(5, 195, 232), color(60));
+  settingBtn = new SettingsButton(width * 0.04, height - (height * 0.06), "S", width * 0.03, BOLD, color(5, 195, 232), color(60));
+  backBtn = new Button(width - ((width * 0.25) + 5), (height * 0.85) - 5, "BACK", 50, BOLD, color(5, 195, 232), color(60));
 
   ocean = new Ocean();
   justClouds('SETUP');//Couldn't Come Up With A Good Name#####
@@ -71,9 +72,44 @@ function mousePressed(){
     playBtn.mouseOverButton = false;
   } else if (gameState === 0 && instructionBtn.mouseOverButton){
     gameState = 4;
+    prevPage = 0;
     instructionBtn.mouseOverButton = false;
+  } else if (gameState === 0 && settingBtn.mouseOverButton){
+    gameState = 3;
+    prevPage = 0;
+    settingBtn.mouseOverButton = false;
   }
 
+  if (gameState === 2 && playBtn.mouseOverButton){
+    scoreIndicator.score = 0;
+    alienSpawn = 0;
+    boatBullets = [];
+    alienBullets = [];
+    aliens = [];
+    boat.health = 3;
+    boat.fireRate = 45;
+    boat.reloaded = false;
+    gameState = 1;
+    playBtn.mouseoverButton = false;
+  } else if (gameState === 2 && instructionBtn.mouseOverButton){
+    gameState = 4;
+    prevPage = 2;
+    instructionBtn.mouseOverButton = false;
+  } else if (gameState === 2 && settingBtn.mouseOverButton){
+    gameState = 3;
+    prevPage = 2;
+    settingBtn.mouseOverButton = false;
+  }
+
+  if (gameState === 3 && backBtn.mouseOverButton){
+    gameState = prevPage;
+    backBtn.mouseOverButton = false;
+  }
+
+  if (gameState === 4 && backBtn.mouseOverButton){
+    gameState = prevPage;
+    backBtn.mouseOverButton = false;
+  }
 
 }
 
@@ -83,6 +119,68 @@ function keyPressed(){
     boatBullets.push(new BoatBullet(boat.x, boat.y, boat.angle));//Make New Player Bullet#####
     boat.fireRate = 45;
   }
+
+  if (gameState === -1 && basicGameBtn.mouseOverButton && keyCode === 13){
+    gameStyle = "BASIC";
+    gameState = 0;
+    basicGameBtn.mouseOverButton = false;
+  } else if (gameState === -1 && imageGameBtn.mouseOverButton && keyCode === 13){
+    gameStyle = "IMAGE";
+    alert("is Web Server For Chrome Being Used?");
+    gameState = 0;
+    imageGameBtn.mouseOverButton = false;
+  }
+
+  if (gameState === 0 && playBtn.mouseOverButton && keyCode === 13){
+    gameState = 1;
+    playBtn.mouseOverButton = false;
+  } else if (gameState === 0 && instructionBtn.mouseOverButton && keyCode === 13){
+    gameState = 4;
+    prevPage = 0;
+    instructionBtn.mouseOverButton = false;
+  } else if (gameState === 0 && settingBtn.mouseOverButton && keyCode === 13){
+    gameState = 3;
+    prevPage = 0;
+    settingBtn.mouseOverButton = false;
+  }
+
+  if (gameState === 2 && playBtn.mouseOverButton && keyCode === 13){
+    scoreIndicator.score = 0;
+    alienSpawn = 0;
+    boatBullets = [];
+    alienBullets = [];
+    aliens = [];
+    boat.health = 3;
+    boat.fireRate = 45;
+    boat.reloaded = false;
+    gameState = 1;
+    playBtn.mouseoverButton = false;
+  } else if (gameState === 2 && instructionBtn.mouseOverButton && keyCode === 13){
+    gameState = 4;
+    prevPage = 2;
+    instructionBtn.mouseOverButton = false;
+  } else if (gameState === 2 && settingBtn.mouseOverButton && keyCode === 13){
+    gameState = 3;
+    prevPage = 2;
+    settingBtn.mouseOverButton = false;
+  }
+
+  if (gameState === 3 && backBtn.mouseOverButton && keyCode === 13){
+    gameState = prevPage;
+    backBtn.mouseOverButton = false;
+  }
+
+  if (gameState === 4 && backBtn.mouseOverButton && keyCode === 13){
+    gameState = prevPage;
+    backBtn.mouseOverButton = false;
+  }
+
+  if (gameState === 1 && keyCode === 80){
+    gameState = "PAUSED";
+  } else if (gameState === "PAUSED" && keyCode === 80){
+    gameState = 1;
+  }
+
 }
 
 //Start Function gameRun##########
@@ -203,11 +301,51 @@ function gameRun(){
     settingBtn.run();
 
   } else if (gameState === 3){
+    background(144, 214, 249);
+    ocean.run();
+    justClouds('DRAW');//Run And Make Clouds, Couldnt Find A Better Name For The Function#####
 
+    push();
+    fill(255, 0, 0);
+    noStroke();
+    textAlign(CENTER, CENTER);
+    textStyle(BOLD);
+    textSize(120);
+    text("UNDER", width / 2, height * 0.25);
+    text("DEVELOPMENT", width / 2, height * 0.75)
+    pop();
+
+    backBtn.run();
 
   } else if (gameState === 4){
+    background(144, 214, 249);
+    ocean.run();
+    justClouds('DRAW');//Run And Make Clouds, Couldnt Find A Better Name For The Function#####
 
+    push();
+    fill(63, 14, 79);
+    noStroke();
+    textAlign(LEFT, CENTER);
+    textStyle(BOLDITALIC);
+    textSize(20);
+    text("~ Use 'A'/Left Arrow and 'D'/Right Arrow to maneuver", 10, 20);
+    text("~ Left Click/Press SpaceBar to shoot", 10, 50);
+    text("~ Press 'P' to PAUSE game", 10, 80);
 
+    text("~ FUN FACT: Eric Ettlin is a Navy Veteran!", 10, 320)
+    pop();
+
+    backBtn.run();
+
+  } else if (gameState === "PAUSED"){
+    push();
+    fill(255);
+    noStroke();
+    textAlign(CENTER, CENTER);
+    textStyle(BOLD);
+    textSize(100);
+    text("PAUSED", width / 2, height / 2);
+    pop();
   }
 }
 //End Function gameRun##########
