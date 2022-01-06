@@ -57,3 +57,14 @@ class Clouds extends p5.Vector{
   }
 }
 //End Class Clouds##########
+
+//Start Class Island##########
+class Island extends p5.Vector{
+  constructor(amount){
+    super(x, y);//REPLACE X AND Y WITH RANDOMIZATION%%%%%%%%%%%%%%%%%%%
+    this.quantity = amount;
+    this.size = ['SMALL', 'MED', 'LARGE'];
+
+  }
+}
+//End Class Island##########
