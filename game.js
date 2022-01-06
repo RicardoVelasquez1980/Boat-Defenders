@@ -332,7 +332,7 @@ function gameRun(){
     text("~ Left Click/Press SpaceBar to shoot", 10, 50);
     text("~ Press 'P' to PAUSE game", 10, 80);
 
-    text("~ FUN FACT: Eric Ettlin is a Navy Veteran!", 10, 320)
+    text("~ FUN FACT: Mr.Ettlin is a Navy Veteran!", 10, 320)
     pop();
 
     backBtn.run();
@@ -370,9 +370,10 @@ function runAliens(){
 function boatDamaged(){
   //Collistion Damage#####
   for (let i = 0; i < aliens.length; i++){
-    if (aliens[i].bottomY > boat.y && aliens[i].topY < boat.y + 25 && aliens[i].bottomX - 15 > boat.x - 45 && aliens[i].bottomX < boat.x + 45){
+    if (aliens[i].bottomY > boat.y && aliens[i].topY < boat.y + 25 && aliens[i].bottomX - 15 > boat.x - 45 && aliens[i].bottomX + 15 < boat.x + 45){
       boat.health--;//Boat Health Decreased#####
       aliens.splice(i, 1);//Alien Removed But Wont Go Towards Players Score#####
+      aliens.push(new Alien());//Spawn New Aliens#####
     }
   }
 
@@ -435,6 +436,16 @@ function alienKilled(){
       if (boatBullets[i].detection && boatBullets[i].alienHit === aliens[j]){
         aliens.splice(j, 1);//Alien Is Removed#####
       }
+    }
+  }
+
+  for (let i = 0; i < aliens.length; i++){
+    if (aliens[i].bottomY >= boat.y && aliens[i].bottomX - 15 < boat.x - 45){
+      aliens.splice(i, 1);
+      aliens.push(new Alien());//Spawn New Aliens#####
+    } else if (aliens[i].bottomY >= boat.y && aliens[i].bottomX + 15 > boat.x + 45){
+      aliens.splice(i, 1);
+      aliens.push(new Alien());//Spawn New Aliens#####
     }
   }
 }
