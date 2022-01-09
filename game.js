@@ -3,7 +3,7 @@
 
 //Global Variable#####
 let aliens = [], boat, boatBullets = [], alienBullets = [], alienSpawn = 3;
-let ocean, clouds = [];
+let ocean, clouds = [], islands = [];
 let healthIndicator, scoreIndicator;
 /*
 gameState -1 = ASKS FOR IMAGES OR NO IMAGES
@@ -36,6 +36,7 @@ function setup() {
 
   ocean = new Ocean();
   justClouds('SETUP');//Couldn't Come Up With A Good Name#####
+  loadIslands(ceil(random(3)));
 
   boat = new Boat(width / 2, height - 100);//Boat Made#####
   loadAliens(alienSpawn);//Function That Creates Starting Aliens#####
@@ -222,6 +223,7 @@ function gameRun(){
     background(144, 214, 249);
     ocean.run();
     justClouds('DRAW');//Run And Make Clouds, Couldnt Find A Better Name For The Function#####
+    runIslands();
 
     push();
     fill(5, 195, 232);
@@ -242,6 +244,7 @@ function gameRun(){
     background(144, 214, 249);
     ocean.run();
     justClouds('DRAW');//Run And Make Clouds, Couldnt Find A Better Name For The Function#####
+    runIslands();
 
     alienBulletCreation();
     runBullets();//Runs Bullets#####
@@ -266,6 +269,7 @@ function gameRun(){
     background(144, 214, 249);
     ocean.run();
     justClouds('DRAW');//Run And Make Clouds, Couldnt Find A Better Name For The Function#####
+    runIslands();
 
     push();
     fill(5, 195, 232);
@@ -304,6 +308,7 @@ function gameRun(){
     background(144, 214, 249);
     ocean.run();
     justClouds('DRAW');//Run And Make Clouds, Couldnt Find A Better Name For The Function#####
+    runIslands();
 
     push();
     fill(255, 0, 0);
@@ -321,6 +326,7 @@ function gameRun(){
     background(144, 214, 249);
     ocean.run();
     justClouds('DRAW');//Run And Make Clouds, Couldnt Find A Better Name For The Function#####
+    runIslands();
 
     push();
     fill(63, 14, 79);
@@ -494,3 +500,19 @@ function justClouds(str){
   }
 }
 //End Function justClouds##########
+
+//Start Function loadIslands##########
+function loadIslands(amt){
+  for (let i = 0; i < amt; i++){
+    islands.push(new Island());
+  }
+}
+//End Function loadIslands##########
+
+//Start Function runIslands##########
+function runIslands(){
+  for (let i = 0; i < islands.length; i++){
+    islands[i].run();
+  }
+}
+//End Function runIslands##########

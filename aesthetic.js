@@ -60,11 +60,35 @@ class Clouds extends p5.Vector{
 
 //Start Class Island##########
 class Island extends p5.Vector{
-  constructor(amount){
-    super(x, y);//REPLACE X AND Y WITH RANDOMIZATION%%%%%%%%%%%%%%%%%%%
-    this.quantity = amount;
-    this.size = ['SMALL', 'MED', 'LARGE'];
+  constructor(){
+    super(random(width), random(height * 0.75, height - 85));//REPLACE X AND Y WITH RANDOMIZATION%%%%%%%%%%%%%%%%%%%
+    this.size = 'N/A';
+    this.sizeChoices = ['SMALL', 'MED', 'LARGE'];
+    this.sizeSelection();
+  }
 
+  run(){
+    this.render();
+  }
+
+  render(){
+    if (this.size === 'SMALL'){
+      push();
+      fill(247, 213, 134);
+      noStroke();
+      translate(this.x, this.y);
+      arc(0, 0, 80, 70, PI, TWO_PI);
+      pop();
+    } else if (this.size === 'MED'){
+      this.size = 'SMALL';
+    } else if (this.size === 'LARGE'){
+      this.size = 'SMALL';
+    }
+  }
+
+  sizeSelection(){
+    let x = floor(random(3));
+    this.size = this.sizeChoices[x];
   }
 }
 //End Class Island##########
