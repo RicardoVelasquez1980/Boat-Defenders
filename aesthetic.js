@@ -80,9 +80,19 @@ class Island extends p5.Vector{
       arc(0, 0, 80, 70, PI, TWO_PI);
       pop();
     } else if (this.size === 'MED'){
-      this.size = 'SMALL';
+      push();
+      fill(247, 213, 134);
+      noStroke();
+      translate(this.x, this.y);
+      arc(0, 0, 160, 140, PI, TWO_PI);
+      pop();
     } else if (this.size === 'LARGE'){
-      this.size = 'SMALL';
+      push();
+      fill(247, 213, 134);
+      noStroke();
+      translate(this.x, this.y);
+      arc(0, 0, 240, 210, PI, TWO_PI);
+      pop();
     }
   }
 
