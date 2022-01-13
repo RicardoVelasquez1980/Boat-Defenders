@@ -3,7 +3,7 @@
 
 //Global Variable#####
 let aliens = [], boat, boatBullets = [], alienBullets = [], alienSpawn = 3;
-let ocean, clouds = [], islands = [];
+let ocean, clouds = [], islands = [], trees = [];
 let healthIndicator, scoreIndicator;
 /*
 gameState -1 = ASKS FOR IMAGES OR NO IMAGES
@@ -37,6 +37,7 @@ function setup() {
   ocean = new Ocean();
   justClouds('SETUP');//Couldn't Come Up With A Good Name#####
   loadIslands(ceil(random(3)));
+  loadTrees(islands.length + ceil(random(4)));
 
   boat = new Boat(width / 2, height - 100);//Boat Made#####
   loadAliens(alienSpawn);//Function That Creates Starting Aliens#####
@@ -219,6 +220,9 @@ function gameRun(){
     basicGameBtn.run();
     imageGameBtn.run();
 
+
+    runTrees();
+
   } else if (gameState === 0){
     background(144, 214, 249);
     ocean.run();
@@ -396,9 +400,9 @@ function boatDamaged(){
 //Start Function alienBulletCreation##########
 function alienBulletCreation(){
   for (let i = 0; i < aliens.length; i++){
-    if (!aliens[i].fireRate){
+    if (aliens[i].fireRate < 0){
       alienBullets.push(new  AlienBullet(aliens[i].topX, aliens[i].topY + 10, aliens[i].angle));
-      aliens[i].fireRate = 150;
+      aliens[i].fireRate = random(90, 150);
     }
   }
 }
@@ -516,3 +520,19 @@ function runIslands(){
   }
 }
 //End Function runIslands##########
+
+//Start Function loadTrees##########
+function loadTrees(amt){
+  for (let i = 0; i < amt; i ++){
+    trees.push(new Tree());
+  }
+}
+//End Function loadTrees##########
+
+//Start Function runTrees##########
+function runTrees(){
+  for (let i = 0; i < trees.length; i++){
+    trees[i].run();
+  }
+}
+//End Function runTrees##########

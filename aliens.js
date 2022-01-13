@@ -13,7 +13,7 @@ class Alien extends p5.Vector{
     this.bottomX = this.x;//Bottom X Position#####
     this.bottomY = this.y + 20;//Bottom Y Position#####
     this.angle = atan2(boat.x - this.topX, boat.y - (this.topY + 10));//Angle#####
-    this.fireRate = 150;
+    this.fireRate = random(90, 150);
   }
 
   run() {
@@ -69,7 +69,7 @@ class Alien extends p5.Vector{
     } else if (this.x < 0){
       this.x = width - 10;
     }
-    
+
     if (this.y < 0) {
       this.y = height - 10;
     } else if (this.y > height){

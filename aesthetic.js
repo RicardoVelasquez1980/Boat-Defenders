@@ -102,3 +102,39 @@ class Island extends p5.Vector{
   }
 }
 //End Class Island##########
+
+//Start Class Tree##########
+class Tree extends Island{
+  constructor(){
+    super();
+    this.y2 = random(70, 80);
+    this.x2 = random(15, 20);
+    this.x3 = random(30, 40);
+  }
+
+  run(){
+    this.render();
+  }
+
+  render(){
+    if (this.size === 'SMALL'){
+      push();
+      fill(179, 173, 159);
+      stroke(255);
+      beginShape();
+      curveVertex(this.x + this.x2, this.y + 2);
+      curveVertex(this.x, this.y);
+      curveVertex(this.x + this.x2, this.y - this.y2);
+      curveVertex(this.x + this.x3 + this.x2, this.y - this.y2)
+      curveVertex(this.x + this.x3 + this.x2, this.y);
+      curveVertex(this.x + this.x3 + this.x2, this.y + 2);
+      endShape();
+      pop();
+    } else if (this.size === 'MED'){
+      this.size = 'SMALL';
+    } else if (this.size === 'LARGE'){
+      this.size = 'SMALL';
+    }
+  }
+}
+//End Class Tree##########
