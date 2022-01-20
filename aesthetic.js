@@ -61,7 +61,7 @@ class Clouds extends p5.Vector{
 //Start Class Island##########
 class Island extends p5.Vector{
   constructor(){
-    super(random(width), random(height * 0.75, height - 85));//REPLACE X AND Y WITH RANDOMIZATION%%%%%%%%%%%%%%%%%%%
+    super(random(width), random(height * 0.75, height - 85));
     this.size = 'N/A';
     this.sizeChoices = ['SMALL', 'MED', 'LARGE'];
     this.sizeSelection();
@@ -104,37 +104,66 @@ class Island extends p5.Vector{
 //End Class Island##########
 
 //Start Class Tree##########
-class Tree extends Island{
-  constructor(){
-    super();
-    this.y2 = random(70, 80);
-    this.x2 = random(15, 20);
-    this.x3 = random(30, 40);
+class Tree extends p5.Vector{
+  constructor(x, y, islaSize){
+    super(x, y);
+    this.size = 'N/A';
+    this.sizeChoices = ['SMALL', 'MED', 'LARGE'];
+    this.sizeSelection();
+    this.randy1 = random(60, 80);
+    this.randy2 = random(60, 80);
+    this.randx1 = random(5, 10);
+    this.randx2 = random(5, 10);
   }
 
   run(){
-    this.render();
+    this.renderTrunk();
+    this.renderLeaves();
   }
 
-  render(){
-    if (this.size === 'SMALL'){
-      push();
-      fill(179, 173, 159);
-      stroke(255);
+  renderTrunk(){
+    push();
+    noStroke();
+    fill(232, 183, 139);
+    if (this.size === "SMALL"){
       beginShape();
-      curveVertex(this.x + this.x2, this.y + 2);
-      curveVertex(this.x, this.y);
-      curveVertex(this.x + this.x2, this.y - this.y2);
-      curveVertex(this.x + this.x3 + this.x2, this.y - this.y2)
-      curveVertex(this.x + this.x3 + this.x2, this.y);
-      curveVertex(this.x + this.x3 + this.x2, this.y + 2);
+      curveVertex(this.x - 10 + this.randx2, this.y);
+      curveVertex(this.x - 10 + this.randx2, this.y);
+      curveVertex(this.x - 10 + this.randx1, this.y - this.randy1);
+      curveVertex(this.x + 10 + this.randx2, this.y - this.randy2);
+      curveVertex(this.x + 10 + this.randx1, this.y);
+      curveVertex(this.x + 10 + this.randx1, this.y);
+      endShape();
+    } else if ( this.size === "MED"){
+      beginShape();
+      curveVertex(this.x - 15 + this.randx2, this.y);
+      curveVertex(this.x - 15 + this.randx2, this.y);
+      curveVertex(this.x - 15 + this.randx1, this.y - this.randy1 - 5);
+      curveVertex(this.x + 15 + this.randx2, this.y - this.randy2 - 5);
+      curveVertex(this.x + 15 + this.randx1, this.y);
+      curveVertex(this.x + 15 + this.randx1, this.y);
+      endShape();
+    } else if (this.size === "LARGE"){
+      beginShape();
+      curveVertex(this.x - 20 + this.randx2, this.y);
+      curveVertex(this.x - 20 + this.randx2, this.y);
+      curveVertex(this.x - 20 + this.randx1, this.y - this.randy1 - 10);
+      curveVertex(this.x + 20 + this.randx2, this.y - this.randy2 - 10);
+      curveVertex(this.x + 20 + this.randx1, this.y);
+      curveVertex(this.x + 20 + this.randx1, this.y);
       endShape();
       pop();
-    } else if (this.size === 'MED'){
-      this.size = 'SMALL';
-    } else if (this.size === 'LARGE'){
-      this.size = 'SMALL';
     }
+  }
+
+  renderLeaves(){
+    push();
+    pop();
+  }
+
+  sizeSelection(){
+    let x = floor(random(3));
+    this.size = this.sizeChoices[x];
   }
 }
 //End Class Tree##########

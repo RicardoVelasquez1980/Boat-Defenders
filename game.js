@@ -400,7 +400,7 @@ function boatDamaged(){
 //Start Function alienBulletCreation##########
 function alienBulletCreation(){
   for (let i = 0; i < aliens.length; i++){
-    if (aliens[i].fireRate < 0){
+    if (aliens[i].fireRate <= 0){
       alienBullets.push(new  AlienBullet(aliens[i].topX, aliens[i].topY + 10, aliens[i].angle));
       aliens[i].fireRate = random(90, 150);
     }
@@ -524,7 +524,8 @@ function runIslands(){
 //Start Function loadTrees##########
 function loadTrees(amt){
   for (let i = 0; i < amt; i ++){
-    trees.push(new Tree());
+    let index = floor(random(islands.length));
+    trees.push(new Tree(islands[index].x, islands[index].y, islands[index].size));
   }
 }
 //End Function loadTrees##########
